@@ -1,11 +1,11 @@
 package main
 
 import (
-	"agent-app/src/auth0"
-	"agent-app/src/handler"
-	"agent-app/src/model"
-	"agent-app/src/repository"
-	"agent-app/src/service"
+	"agent-app/auth0"
+	"agent-app/handler"
+	"agent-app/model"
+	"agent-app/repository"
+	"agent-app/service"
 	"fmt"
 	"log"
 	"net/http"
