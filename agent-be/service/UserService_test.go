@@ -1,10 +1,10 @@
 package service
 
 import (
-	"agent-app/src/auth0"
-	"agent-app/src/dto"
-	"agent-app/src/mapper"
-	"agent-app/src/repository"
+	"agent-app/auth0"
+	"agent-app/dto"
+	"agent-app/mapper"
+	"agent-app/repository"
 	"errors"
 	"fmt"
 	"testing"

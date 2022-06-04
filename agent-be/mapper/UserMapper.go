@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	"agent-app/src/dto"
-	"agent-app/src/model"
+	"agent-app/dto"
+	"agent-app/model"
 )
 
 func RegistrationRequestDTOToUser(registeredUserDto *dto.RegistrationRequestDTO) *model.User {
