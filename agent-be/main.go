@@ -45,6 +45,10 @@ func initUserRepo(database *gorm.DB) *repository.UserRepository {
 	return &repository.UserRepository{Database: database}
 }
 
+func initCompanyRepo(database *gorm.DB) *repository.CompanyRepository {
+	return &repository.CompanyRepository{Database: database}
+}
+
 func initAuth0Client() *auth0.Auth0Client {
 	domain := os.Getenv("AUTH0_DOMAIN")
 	clientId := os.Getenv("AUTH0_CLIENT_ID")
@@ -59,13 +63,28 @@ func initUserService(userRepo *repository.UserRepository, auth0Client *auth0.Aut
 	return &service.UserService{UserRepo: userRepo, Auth0Client: *auth0Client}
 }
 
+func initCompanyService(companyRepo *repository.CompanyRepository, auth0Client *auth0.Auth0Client) *service.CompanyService {
+	return &service.CompanyService{CompanyRepo: companyRepo, Auth0Client: *auth0Client}
+}
+
 func initUserHandler(service *service.UserService) *handler.UserHandler {
 	return &handler.UserHandler{Service: service}
+}
+
+func initCompanyHandler(service *service.CompanyService) *handler.CompanyHandler {
+	return &handler.CompanyHandler{Service: service}
 }
 
 func handleUserFunc(handler *handler.UserHandler, router *gin.Engine) {
 	router.POST("register", handler.Register)
 	router.GET("users", handler.GetByEmail)
+}
+
+func handleCompanyFunc(handler *handler.CompanyHandler, router *gin.Engine) {
+	router.POST("company", handler.Register)
+	router.POST("company/approve", handler.Approve)
+	router.GET("company", handler.GetAllCompanies)
+	router.GET("companyRequests", handler.GetAllCompanyRequests)
 }
 
 func main() {
@@ -86,9 +105,14 @@ func main() {
 	userService := initUserService(userRepo, auth0Client)
 	userHandler := initUserHandler(userService)
 
+	companyRepo := initCompanyRepo(database)
+	companyService := initCompanyService(companyRepo, auth0Client)
+	companyHandler := initCompanyHandler(companyService)
+
 	router := gin.Default()
 
 	handleUserFunc(userHandler, router)
+	handleCompanyFunc(companyHandler, router)
 
 	http.ListenAndServe(port, cors.AllowAll().Handler(router))
 }
