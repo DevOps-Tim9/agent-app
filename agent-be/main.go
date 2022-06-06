@@ -25,10 +25,9 @@ func initDB() *gorm.DB {
 
 	user := os.Getenv("DB_USER")
 	pass := os.Getenv("DB_PASSWORD")
-	port := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB")
 
-	connString := fmt.Sprintf("host=localhost port=%s user=%s dbname=%s sslmode=disable password=%s", port, user, dbName, pass)
+	connString := fmt.Sprintf("host=localhost port=5432 user=%s dbname=%s sslmode=disable password=%s", user, dbName, pass)
 	db, err = gorm.Open("postgres", connString)
 
 	if err != nil {
@@ -67,12 +66,20 @@ func initCompanyService(companyRepo *repository.CompanyRepository, auth0Client *
 	return &service.CompanyService{CompanyRepo: companyRepo, Auth0Client: *auth0Client}
 }
 
+func initOfferService(companyRepo *repository.CompanyRepository) *service.OfferService {
+	return &service.OfferService{CompanyRepo: companyRepo}
+}
+
 func initUserHandler(service *service.UserService) *handler.UserHandler {
 	return &handler.UserHandler{Service: service}
 }
 
 func initCompanyHandler(service *service.CompanyService) *handler.CompanyHandler {
 	return &handler.CompanyHandler{Service: service}
+}
+
+func initOfferHandler(service *service.OfferService) *handler.OfferHandler {
+	return &handler.OfferHandler{Service: service}
 }
 
 func handleUserFunc(handler *handler.UserHandler, router *gin.Engine) {
@@ -85,6 +92,13 @@ func handleCompanyFunc(handler *handler.CompanyHandler, router *gin.Engine) {
 	router.POST("company/approve", handler.Approve)
 	router.GET("company", handler.GetAllCompanies)
 	router.GET("companyRequests", handler.GetAllCompanyRequests)
+}
+
+func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
+	router.POST("jobOffers", handler.AddJobOffer)
+	router.GET("jobOffers", handler.GetAll)
+	router.GET("jobOffers/search", handler.Search)
+	router.GET("jobOffers/company/:companyId", handler.GetJobOffersByCompany)
 }
 
 func main() {
@@ -109,10 +123,14 @@ func main() {
 	companyService := initCompanyService(companyRepo, auth0Client)
 	companyHandler := initCompanyHandler(companyService)
 
+	offerService := initOfferService(companyRepo)
+	offerHandler := initOfferHandler(offerService)
+
 	router := gin.Default()
 
 	handleUserFunc(userHandler, router)
 	handleCompanyFunc(companyHandler, router)
+	handleOfferFunc(offerHandler, router)
 
 	http.ListenAndServe(port, cors.AllowAll().Handler(router))
 }
