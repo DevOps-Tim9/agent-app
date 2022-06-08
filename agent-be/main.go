@@ -7,15 +7,14 @@ import (
 	"agent-app/repository"
 	"agent-app/service"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
+	"log"
+	"net/http"
+	"os"
 )
 
 var db *gorm.DB
@@ -36,7 +35,7 @@ func initDB() *gorm.DB {
 
 	db.AutoMigrate(model.User{})
 	db.AutoMigrate(model.Company{})
-
+	db.AutoMigrate(model.Comment{})
 	return db
 }
 
@@ -94,6 +93,27 @@ func handleCompanyFunc(handler *handler.CompanyHandler, router *gin.Engine) {
 	router.GET("companyRequests", handler.GetAllCompanyRequests)
 }
 
+func initCommentRepo(database *gorm.DB) *repository.CommentRepository {
+	return &repository.CommentRepository{Database: database}
+}
+
+func initCommentService(commentRepo *repository.CommentRepository) *service.CommentService {
+	return &service.CommentService{CommentRepo: commentRepo}
+}
+
+func initCommentHandler(service *service.CommentService) *handler.CommentHandler {
+	return &handler.CommentHandler{Service: service}
+}
+
+func handleCommentFunc(handler *handler.CommentHandler, router *gin.Engine) {
+	router.POST("comment", handler.AddComment)
+	router.GET("comment/:id", handler.GetCommentByID)
+	router.DELETE("comment/:id", handler.DeleteComment)
+	router.PUT("comment/:id", handler.UpdateComment)
+	router.GET("search/comment/:id/owner", handler.GetCommentByOwnerID)
+	router.GET("search/comment/:id/company", handler.GetCommentByCompanyID)
+}
+
 func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
 	router.POST("jobOffers", handler.AddJobOffer)
 	router.GET("jobOffers", handler.GetAll)
@@ -123,6 +143,9 @@ func main() {
 	companyService := initCompanyService(companyRepo, auth0Client)
 	companyHandler := initCompanyHandler(companyService)
 
+	commentRepo := initCommentRepo(database)
+	commentService := initCommentService(commentRepo)
+	commentHandler := initCommentHandler(commentService)
 	offerService := initOfferService(companyRepo)
 	offerHandler := initOfferHandler(offerService)
 
@@ -130,6 +153,7 @@ func main() {
 
 	handleUserFunc(userHandler, router)
 	handleCompanyFunc(companyHandler, router)
+	handleCommentFunc(commentHandler, router)
 	handleOfferFunc(offerHandler, router)
 
 	http.ListenAndServe(port, cors.AllowAll().Handler(router))
