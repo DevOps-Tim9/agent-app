@@ -112,8 +112,8 @@ func handleCommentFunc(handler *handler.CommentHandler, router *gin.Engine) {
 	router.PUT("comment/:id", handler.UpdateComment)
 	router.GET("search/comment/:id/owner", handler.GetCommentByOwnerID)
 	router.GET("search/comment/:id/company", handler.GetCommentByCompanyID)
+}
 
-  
 func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
 	router.POST("jobOffers", handler.AddJobOffer)
 	router.GET("jobOffers", handler.GetAll)
