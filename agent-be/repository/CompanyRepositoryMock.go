@@ -28,3 +28,9 @@ func (c *CompanyRepositoryMock) GetAll(approved int) ([]*model.Company, error) {
 
 	return args.Get(0).([]*model.Company), args.Error(1)
 }
+
+func (c *CompanyRepositoryMock) GetByID(ID int) (*model.Company, error) {
+	args := c.Called(ID)
+
+	return args.Get(0).(*model.Company), args.Error(1)
+}

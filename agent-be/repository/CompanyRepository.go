@@ -13,7 +13,8 @@ import (
 type ICompanyRepository interface {
 	AddCompany(*model.Company) (int, error)
 	Approve(*dto.ApproveCompanyDTO) error
-	GetAll(approved int) ([]*model.Company, error)
+	GetAll(int) ([]*model.Company, error)
+	GetByID(int) (*model.Company, error)
 }
 
 func NewCompanyRepository(database *gorm.DB) ICompanyRepository {
@@ -67,4 +68,13 @@ func (repo *CompanyRepository) GetAll(approved int) ([]*model.Company, error) {
 	}
 
 	return companies, nil
+}
+
+func (repo *CompanyRepository) GetByID(ID int) (*model.Company, error) {
+	var company = model.Company{}
+	if result := repo.Database.Find(&company, "ID = ?", ID); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &company, nil
 }
