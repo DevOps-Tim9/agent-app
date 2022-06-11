@@ -88,3 +88,22 @@ func (handler *CompanyHandler) GetAllCompanyRequests(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, companies)
 }
+
+func (handler *CompanyHandler) UpdateCompany(ctx *gin.Context) {
+	var companyToUpdate dto.CompanyUpdateDTO
+	if err := ctx.ShouldBindJSON(&companyToUpdate); err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	claims, _ := extractClaims(ctx.Request.Header.Get("Authorization"))
+
+	companyDTO, err := handler.Service.Update(&companyToUpdate, fmt.Sprint(claims["sub"]))
+	if err != nil {
+		fmt.Println(err)
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, companyDTO)
+}

@@ -3,6 +3,7 @@ package service
 import (
 	"agent-app/auth0"
 	"agent-app/dto"
+	"agent-app/mapper"
 	"agent-app/model"
 	"agent-app/repository"
 	"testing"
@@ -88,5 +89,42 @@ func (suite *CompanyServiceUnitTestsSuite) TestCompanyService_Approve_CompanyReq
 
 	err := suite.service.Approve(&request)
 
+	assert.Equal(suite.T(), nil, err)
+}
+
+func (suite *CompanyServiceUnitTestsSuite) TestCompanyService_Update_CompanyUpdated() {
+	company := dto.CompanyUpdateDTO{
+		ID:          1,
+		Name:        "new name",
+		Contact:     "new contact",
+		Description: "new description",
+	}
+
+	companyEntity := model.Company{
+		ID:           1,
+		Name:         "name",
+		Contact:      "contact",
+		Description:  "description",
+		OwnerAuth0ID: "1",
+	}
+
+	suite.companyRepositoryMock.On("GetByID", company.ID).Return(&companyEntity, nil).Once()
+
+	toUpdate := mapper.CompanyUpdateDTOToCompany(&company)
+	toUpdate.OwnerAuth0ID = companyEntity.OwnerAuth0ID
+
+	forReturn := dto.CompanyResponseDTO{
+		ID:          1,
+		Name:        "new name",
+		Contact:     "new contact",
+		Description: "new description",
+	}
+	suite.companyRepositoryMock.On("Update", toUpdate).Return(&forReturn, nil).Once()
+
+	updatedCompany, err := suite.service.Update(&company, "1")
+
+	assert.Equal(suite.T(), company.Name, updatedCompany.Name)
+	assert.Equal(suite.T(), company.Contact, updatedCompany.Contact)
+	assert.Equal(suite.T(), company.Description, updatedCompany.Description)
 	assert.Equal(suite.T(), nil, err)
 }

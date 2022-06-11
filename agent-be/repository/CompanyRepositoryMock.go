@@ -34,3 +34,9 @@ func (c *CompanyRepositoryMock) GetByID(ID int) (*model.Company, error) {
 
 	return args.Get(0).(*model.Company), args.Error(1)
 }
+
+func (c *CompanyRepositoryMock) Update(company *model.Company) (*dto.CompanyResponseDTO, error) {
+	args := c.Called(company)
+
+	return args.Get(0).(*dto.CompanyResponseDTO), args.Error(1)
+}

@@ -7,14 +7,15 @@ import (
 	"agent-app/repository"
 	"agent-app/service"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
-	"log"
-	"net/http"
-	"os"
 )
 
 var db *gorm.DB
@@ -91,6 +92,7 @@ func handleCompanyFunc(handler *handler.CompanyHandler, router *gin.Engine) {
 	router.POST("company/approve", handler.Approve)
 	router.GET("company", handler.GetAllCompanies)
 	router.GET("companyRequests", handler.GetAllCompanyRequests)
+	router.PUT("company", handler.UpdateCompany)
 }
 
 func initCommentRepo(database *gorm.DB) *repository.CommentRepository {
