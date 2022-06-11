@@ -2,6 +2,7 @@ package repository
 
 import (
 	"agent-app/dto"
+	"agent-app/mapper"
 	"agent-app/model"
 	"errors"
 	"fmt"
@@ -15,6 +16,7 @@ type ICompanyRepository interface {
 	Approve(*dto.ApproveCompanyDTO) error
 	GetAll(int) ([]*model.Company, error)
 	GetByID(int) (*model.Company, error)
+	Update(*model.Company) (*dto.CompanyResponseDTO, error)
 }
 
 func NewCompanyRepository(database *gorm.DB) ICompanyRepository {
@@ -77,4 +79,14 @@ func (repo *CompanyRepository) GetByID(ID int) (*model.Company, error) {
 	}
 
 	return &company, nil
+}
+
+func (repo *CompanyRepository) Update(company *model.Company) (*dto.CompanyResponseDTO, error) {
+	result := repo.Database.Save(&company)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return mapper.CompanyToCompanyResponseDTO(company), nil
 }

@@ -25,3 +25,14 @@ func CompanyToCompanyResponseDTO(company *model.Company) *dto.CompanyResponseDTO
 
 	return &companyDTO
 }
+
+func CompanyUpdateDTOToCompany(companyUpdateDto *dto.CompanyUpdateDTO) *model.Company {
+	var company model.Company
+
+	company.ID = companyUpdateDto.ID
+	company.Name = companyUpdateDto.Name
+	company.Contact = companyUpdateDto.Contact
+	company.Description = companyUpdateDto.Description
+
+	return &company
+}
