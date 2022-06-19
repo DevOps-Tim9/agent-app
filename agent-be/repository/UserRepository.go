@@ -17,6 +17,7 @@ type IUserRepository interface {
 	GetByID(int) (*model.User, error)
 	GetByEmail(string) (*dto.UserResponseDTO, error)
 	Update(*model.User) (*dto.UserResponseDTO, error)
+	CreateAdmin([]model.User)
 }
 
 func NewUserRepository(database *gorm.DB) IUserRepository {
@@ -27,6 +28,14 @@ func NewUserRepository(database *gorm.DB) IUserRepository {
 
 type UserRepository struct {
 	Database *gorm.DB
+}
+
+func (repo *UserRepository) CreateAdmin(admins []model.User) {
+	for i := 0; i < len(admins); i++ {
+		if repo.Database.Where("email = ?", admins[i].Email).RowsAffected == 0 {
+			repo.AddUser(&admins[i])
+		}
+	}
 }
 
 func (repo *UserRepository) AddUser(user *model.User) (int, error) {

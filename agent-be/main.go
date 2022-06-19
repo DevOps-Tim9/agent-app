@@ -40,6 +40,41 @@ func initDB() *gorm.DB {
 	return db
 }
 
+func addPredefinedAdmins(repo *repository.UserRepository) {
+	admin1 := model.User{
+		Username:  "adminAgent",
+		FirstName: "Petar",
+		LastName:  "Petrovic",
+		Email:     "admin@agent.com",
+		Password:  "$2a$10$GNysTh1mfPQbnNUHQM.iCe5cLIejAWU.6A1TTPDUOa/3.aUvlyG3a",
+		Auth0ID:   "auth0|62af3887a09da4b12f69a89c",
+	}
+
+	admin2 := model.User{
+		Username:  "admin2Agent",
+		FirstName: "Laza",
+		LastName:  "Lazic",
+		Email:     "admin2@agent.com",
+		Password:  "$2a$10$GNysTh1mfPQbnNUHQM.iCe5cLIejAWU.6A1TTPDUOa/3.aUvlyG3a",
+		Auth0ID:   "auth0|62af3899a09da4b12f69a8a0",
+	}
+
+	admin3 := model.User{
+		Username:  "admin3Agent",
+		FirstName: "Mita",
+		LastName:  "Mitic",
+		Email:     "admin3@agent.com",
+		Password:  "$2a$10$GNysTh1mfPQbnNUHQM.iCe5cLIejAWU.6A1TTPDUOa/3.aUvlyG3a",
+		Auth0ID:   "auth0|62af38a970e7f4c2c978fbcb",
+	}
+	admins := []model.User{}
+	admins = append(admins, admin1)
+	admins = append(admins, admin2)
+	admins = append(admins, admin3)
+
+	repo.CreateAdmin(admins)
+}
+
 func initUserRepo(database *gorm.DB) *repository.UserRepository {
 	return &repository.UserRepository{Database: database}
 }
@@ -157,6 +192,8 @@ func main() {
 	handleCompanyFunc(companyHandler, router)
 	handleCommentFunc(commentHandler, router)
 	handleOfferFunc(offerHandler, router)
+
+	addPredefinedAdmins(userRepo)
 
 	http.ListenAndServe(port, cors.AllowAll().Handler(router))
 }

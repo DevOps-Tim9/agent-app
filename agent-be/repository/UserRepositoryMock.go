@@ -46,3 +46,6 @@ func (u *UserRepositoryMock) Update(user *model.User) (*dto.UserResponseDTO, err
 	}
 	return nil, args.Get(1).(error)
 }
+
+func (repo *UserRepositoryMock) CreateAdmin(admins []model.User) {
+}
