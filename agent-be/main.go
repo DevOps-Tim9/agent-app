@@ -156,6 +156,8 @@ func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
 	router.GET("jobOffers", handler.GetAll)
 	router.GET("jobOffers/search", handler.Search)
 	router.GET("jobOffers/company/:companyId", handler.GetJobOffersByCompany)
+	router.DELETE("jobOffers/:id", handler.DeleteJobOfferById)
+	router.GET("jobOffer/:id", handler.GetJobOfferById)
 }
 
 func main() {
