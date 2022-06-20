@@ -7,28 +7,32 @@ import (
 
 func CommentDTOToComment(dto *dto.CommentDTO) *model.Comment {
 	comment := model.Comment{
-		ID:           dto.ID,
-		CreationDate: dto.CreationDate,
-		UserOwnerID:  dto.UserOwnerID,
-		CompanyID:    dto.CompanyID,
-		Position:     dto.Position,
-		Salary:       dto.Salary,
-		Description:  dto.Description,
+		ID:               dto.ID,
+		CreationDate:     dto.CreationDate,
+		UserOwnerID:      dto.UserOwnerID,
+		CompanyID:        dto.CompanyID,
+		Position:         dto.Position,
+		Salary:           dto.Salary,
+		Rating:           dto.Rating,
+		InterviewProcess: dto.InterviewProcess,
+		Description:      dto.Description,
 	}
 	return &comment
 }
 
 func CommentToCommentDTO(comment *model.Comment) *dto.CommentDTO {
-	dto := dto.CommentDTO{
-		ID:           comment.ID,
-		CreationDate: comment.CreationDate,
-		UserOwnerID:  comment.UserOwnerID,
-		CompanyID:    comment.CompanyID,
-		Position:     comment.Position,
-		Salary:       comment.Salary,
-		Description:  comment.Description,
+	commentDTO := dto.CommentDTO{
+		ID:               comment.ID,
+		CreationDate:     comment.CreationDate,
+		UserOwnerID:      comment.UserOwnerID,
+		CompanyID:        comment.CompanyID,
+		Position:         comment.Position,
+		Salary:           comment.Salary,
+		Rating:           comment.Rating,
+		InterviewProcess: comment.InterviewProcess,
+		Description:      comment.Description,
 	}
-	return &dto
+	return &commentDTO
 }
 
 func ListCommentTOListDTOs(comments []model.Comment) *[]dto.CommentDTO {
