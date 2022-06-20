@@ -65,6 +65,45 @@ func (handler *OfferHandler) GetJobOffersByCompany(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, offersDTO)
 }
 
+func (handler *OfferHandler) GetJobOfferById(ctx *gin.Context) {
+	id, idErr := getId(ctx.Param("id"))
+	if idErr != nil {
+		ctx.JSON(http.StatusBadRequest, idErr.Error())
+		return
+	}
+
+	offersDTO, err := handler.Service.GetJobOfferById(id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, offersDTO)
+}
+
+func (handler *OfferHandler) DeleteJobOfferById(ctx *gin.Context) {
+	id, idErr := getId(ctx.Param("id"))
+	if idErr != nil {
+		ctx.JSON(http.StatusBadRequest, idErr.Error())
+		return
+	}
+
+	claims, isValid := extractClaims(ctx.Request.Header.Get("Authorization"))
+	if !isValid {
+		fmt.Println("Not valid")
+		ctx.JSON(http.StatusBadRequest, "Invalid token")
+		return
+	}
+
+	err := handler.Service.DeleteJobOffer(id, fmt.Sprint(claims["sub"]))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, nil)
+}
+
 func (handler *OfferHandler) Search(ctx *gin.Context) {
 	param := ctx.Query("param")
 	offersDTO, err := handler.Service.Search(param)
