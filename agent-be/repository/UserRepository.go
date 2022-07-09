@@ -15,6 +15,7 @@ type IUserRepository interface {
 	AddUser(*model.User) (int, error)
 	DeleteUser(int) error
 	GetByID(int) (*model.User, error)
+	GetByAuth0ID(string) (*model.User, error)
 	GetByEmail(string) (*dto.UserResponseDTO, error)
 	Update(*model.User) (*dto.UserResponseDTO, error)
 	CreateAdmin([]model.User)
@@ -64,6 +65,17 @@ func (repo *UserRepository) GetByID(id int) (*model.User, error) {
 	}
 	if err := repo.Database.Where("ID = ?", id).First(&userEntity).Error; err != nil {
 		return nil, errors.New(fmt.Sprintf("User with ID %d not found", id))
+	}
+
+	return &userEntity, nil
+}
+
+func (repo *UserRepository) GetByAuth0ID(id string) (*model.User, error) {
+	userEntity := model.User{
+		Auth0ID: id,
+	}
+	if err := repo.Database.Where("auth0_id = ?", id).First(&userEntity).Error; err != nil {
+		return nil, errors.New(fmt.Sprintf("User with auth0ID %s not found", id))
 	}
 
 	return &userEntity, nil

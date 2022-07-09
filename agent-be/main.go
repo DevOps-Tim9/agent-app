@@ -97,8 +97,8 @@ func initUserService(userRepo *repository.UserRepository, auth0Client *auth0.Aut
 	return &service.UserService{UserRepo: userRepo, Auth0Client: *auth0Client}
 }
 
-func initCompanyService(companyRepo *repository.CompanyRepository, auth0Client *auth0.Auth0Client) *service.CompanyService {
-	return &service.CompanyService{CompanyRepo: companyRepo, Auth0Client: *auth0Client}
+func initCompanyService(companyRepo *repository.CompanyRepository, userRepo *repository.UserRepository, auth0Client *auth0.Auth0Client) *service.CompanyService {
+	return &service.CompanyService{CompanyRepo: companyRepo, UserRepo: userRepo, Auth0Client: *auth0Client}
 }
 
 func initOfferService(companyRepo *repository.CompanyRepository) *service.OfferService {
@@ -179,7 +179,7 @@ func main() {
 	userHandler := initUserHandler(userService)
 
 	companyRepo := initCompanyRepo(database)
-	companyService := initCompanyService(companyRepo, auth0Client)
+	companyService := initCompanyService(companyRepo, userRepo, auth0Client)
 	companyHandler := initCompanyHandler(companyService)
 
 	commentRepo := initCommentRepo(database)

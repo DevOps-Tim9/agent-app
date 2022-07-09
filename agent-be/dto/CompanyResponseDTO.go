@@ -5,4 +5,6 @@ type CompanyResponseDTO struct {
 	Name        string
 	Contact     string
 	Description string
+	Owner       string
+	OwnerId     string
 }
