@@ -126,6 +126,7 @@ func (suite *CompanyServiceUnitTestsSuite) TestCompanyService_Update_CompanyUpda
 
 	toUpdate := mapper.CompanyUpdateDTOToCompany(&company)
 	toUpdate.OwnerAuth0ID = companyEntity.OwnerAuth0ID
+	toUpdate.Approved = true
 
 	forReturn := dto.CompanyResponseDTO{
 		ID:          1,
