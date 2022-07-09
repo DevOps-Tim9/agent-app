@@ -18,6 +18,7 @@ type CompanyServiceUnitTestsSuite struct {
 	companyRepositoryMock *repository.CompanyRepositoryMock
 	auth0ClientMock       *auth0.Auth0ClientMock
 	service               ICompanyService
+	userRepositoryMock    *repository.UserRepositoryMock
 }
 
 func TestCompanyServiceUnitTestsSuite(t *testing.T) {
@@ -26,8 +27,9 @@ func TestCompanyServiceUnitTestsSuite(t *testing.T) {
 
 func (suite *CompanyServiceUnitTestsSuite) SetupSuite() {
 	suite.companyRepositoryMock = new(repository.CompanyRepositoryMock)
+	suite.userRepositoryMock = new(repository.UserRepositoryMock)
 	suite.auth0ClientMock = new(auth0.Auth0ClientMock)
-	suite.service = NewCompanyService(suite.companyRepositoryMock, suite.auth0ClientMock)
+	suite.service = NewCompanyService(suite.companyRepositoryMock, suite.userRepositoryMock, suite.auth0ClientMock)
 }
 
 func (suite *CompanyServiceUnitTestsSuite) TestNewCompanyService() {
@@ -64,6 +66,17 @@ func (suite *CompanyServiceUnitTestsSuite) TestCompanyService_GetAll_GetsAllComp
 		Name:        "Test",
 		Description: "Test desc",
 		Contact:     "Test contact",
+		Owner:       "First Last",
+		OwnerId:     "auth0123",
+	}
+	user := model.User{
+		ID:        1,
+		Auth0ID:   "auth0123",
+		FirstName: "First",
+		LastName:  "Last",
+		Email:     "email@email",
+		Password:  "pass123",
+		Username:  "Username",
 	}
 	var companies []*model.Company
 	companies = append(companies, &company)
@@ -72,6 +85,7 @@ func (suite *CompanyServiceUnitTestsSuite) TestCompanyService_GetAll_GetsAllComp
 	companiesDTO = append(companiesDTO, &companyDTO)
 
 	suite.companyRepositoryMock.On("GetAll", 1).Return(companies, nil).Once()
+	suite.userRepositoryMock.On("GetByAuth0ID", "auth0123").Return(&user, nil).Once()
 
 	result, err := suite.service.GetAll(1)
 

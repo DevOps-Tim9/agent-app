@@ -39,6 +39,14 @@ func (u *UserRepositoryMock) GetByID(id int) (*model.User, error) {
 	return nil, args.Get(1).(error)
 }
 
+func (u *UserRepositoryMock) GetByAuth0ID(id string) (*model.User, error) {
+	args := u.Called(id)
+	if args.Get(1) == nil {
+		return args.Get(0).(*model.User), nil
+	}
+	return nil, args.Get(1).(error)
+}
+
 func (u *UserRepositoryMock) Update(user *model.User) (*dto.UserResponseDTO, error) {
 	args := u.Called(user)
 	if args.Get(1) == nil {

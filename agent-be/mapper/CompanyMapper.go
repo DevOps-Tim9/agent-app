@@ -26,6 +26,19 @@ func CompanyToCompanyResponseDTO(company *model.Company) *dto.CompanyResponseDTO
 	return &companyDTO
 }
 
+func CompanyToCompanyResponseDTOForAdmin(company *model.Company, user *model.User) *dto.CompanyResponseDTO {
+	var companyDTO dto.CompanyResponseDTO
+
+	companyDTO.ID = company.ID
+	companyDTO.Name = company.Name
+	companyDTO.Contact = company.Contact
+	companyDTO.Description = company.Description
+	companyDTO.Owner = user.FirstName + " " + user.LastName
+	companyDTO.OwnerId = user.Auth0ID
+
+	return &companyDTO
+}
+
 func CompanyUpdateDTOToCompany(companyUpdateDto *dto.CompanyUpdateDTO) *model.Company {
 	var company model.Company
 

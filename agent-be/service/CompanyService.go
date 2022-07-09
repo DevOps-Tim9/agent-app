@@ -11,6 +11,7 @@ import (
 
 type CompanyService struct {
 	CompanyRepo repository.ICompanyRepository
+	UserRepo    repository.IUserRepository
 	Auth0Client auth0.Auth0Client
 }
 
@@ -21,9 +22,10 @@ type ICompanyService interface {
 	Update(*dto.CompanyUpdateDTO, string) (*dto.CompanyResponseDTO, error)
 }
 
-func NewCompanyService(companyRepository repository.ICompanyRepository, auth0Client auth0.Auth0Client) ICompanyService {
+func NewCompanyService(companyRepository repository.ICompanyRepository, userRepository repository.IUserRepository, auth0Client auth0.Auth0Client) ICompanyService {
 	return &CompanyService{
 		companyRepository,
+		userRepository,
 		auth0Client,
 	}
 }
@@ -59,7 +61,8 @@ func (service *CompanyService) GetAll(approved int) ([]*dto.CompanyResponseDTO, 
 
 	res := make([]*dto.CompanyResponseDTO, len(companies))
 	for i := 0; i < len(companies); i++ {
-		res[i] = mapper.CompanyToCompanyResponseDTO(companies[i])
+		user, _ := service.UserRepo.GetByAuth0ID(companies[i].OwnerAuth0ID)
+		res[i] = mapper.CompanyToCompanyResponseDTOForAdmin(companies[i], user)
 	}
 
 	return res, nil
@@ -77,6 +80,7 @@ func (service *CompanyService) Update(companyToUpdate *dto.CompanyUpdateDTO, use
 
 	company := mapper.CompanyUpdateDTOToCompany(companyToUpdate)
 	company.OwnerAuth0ID = companyEntity.OwnerAuth0ID
+	company.Approved = true
 
 	err := company.Validate()
 	if err != nil {
