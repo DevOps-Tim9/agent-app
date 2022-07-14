@@ -1,0 +1,56 @@
+@use '../../base';
+
+.div-centered {
+    @extend %flex-center;
+}
+
+.button-class {
+    @extend %simple-raised-button;
+    padding: 0px 8px 0px 8px; 
+}
+
+.button-add {
+    @extend %simple-raised-button;
+    float: right;
+}
+
+.button-group {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+app-search {
+    width: 80%;
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+}
+  
+.mat-column-approve {
+    flex: none;
+    width: 7%;
+}
+
+.mat-column-reject {
+    flex: none;
+    width: 7%;
+}
+
+.mat-column-description {
+    flex: none;
+    width: 50%;
+}
+
+.register-company-button {
+    margin: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.register-company-div {
+    display: flex;
+    justify-content: center;
+}
