@@ -1,8 +1,8 @@
 package service
 
 import (
-	"agent-app/dto"
-	"agent-app/repository"
+	"agent-app/src/dto"
+	"agent-app/src/repository"
 	"bytes"
 	"encoding/json"
 	"errors"

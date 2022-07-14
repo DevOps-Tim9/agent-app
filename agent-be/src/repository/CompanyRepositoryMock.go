@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"agent-app/dto"
-	"agent-app/model"
+	"agent-app/src/dto"
+	"agent-app/src/model"
 
 	"github.com/stretchr/testify/mock"
 )

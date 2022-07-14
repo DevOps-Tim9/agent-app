@@ -1,9 +1,10 @@
 package repository
 
 import (
-	"agent-app/model"
-	"github.com/jinzhu/gorm"
+	"agent-app/src/model"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type ICommentRepository interface {

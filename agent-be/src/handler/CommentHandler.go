@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"agent-app/dto"
-	"agent-app/service"
+	"agent-app/src/dto"
+	"agent-app/src/service"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type CommentHandler struct {

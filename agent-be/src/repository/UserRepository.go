@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"agent-app/dto"
-	"agent-app/mapper"
-	"agent-app/model"
+	"agent-app/src/dto"
+	"agent-app/src/mapper"
+	"agent-app/src/model"
 	"errors"
 	"fmt"
 

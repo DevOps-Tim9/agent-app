@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   database:
-    container_name: postgres_container_users
+    container_name: postgres_container_agent
     image: postgres:13
     restart: always
     networks:
@@ -19,13 +19,13 @@ services:
       retries: 3
       start_period: 30s
     ports:
-      - "5435:5432"
+      - "5441:5432"
     volumes:
       - data:/var/lib/postgresql/data
 
-  users-server:
+  agent-app:
     build:
-      context: .
+      context: ./agent-be
       dockerfile: Dockerfile
       target: ${TARGET:-run}
     restart: on-failure
@@ -52,23 +52,19 @@ services:
     volumes:
       - logs:/root/logs
 
-  promtail:
-    image: grafana/promtail:latest
-    networks:
-      - agent-be
-      - network-for-ms
-    volumes:
-      - "./promtail:/etc/promtail"
-      - "/var/log:/var/log"
-      - logs:/var/logs
-    command: -config.file=/etc/promtail/promtail.yml
-    restart: always
+  frontend:
+    container_name: frontend
+    build:
+      context: ./agent-app-FE
+      dockerfile: Dockerfile
+    ports:
+      - 4201:4201
 
 volumes:
   data:
     name: agent-be-database
   logs:
-    name: users-logs
+    name: agent-logs
 
 networks:
   agent-be:

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"agent-app/dto"
-	"agent-app/mapper"
-	"agent-app/repository"
+	"agent-app/src/dto"
+	"agent-app/src/mapper"
+	"agent-app/src/repository"
 )
 
 type ICommentService interface {

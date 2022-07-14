@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	"agent-app/dto"
-	"agent-app/model"
+	"agent-app/src/dto"
+	"agent-app/src/model"
 )
 
 func CompanyRequestDTOToCompany(companyRequestDto *dto.CompanyRequestDTO) *model.Company {

@@ -1,34 +1,40 @@
 package main
 
 import (
-	"agent-app/auth0"
-	"agent-app/handler"
-	"agent-app/model"
-	"agent-app/repository"
-	"agent-app/service"
+	"agent-app/src/auth0"
+	"agent-app/src/handler"
+	"agent-app/src/model"
+	"agent-app/src/repository"
+	"agent-app/src/service"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
 
 var db *gorm.DB
 var err error
 
-func initDB() *gorm.DB {
+func initDB() (*gorm.DB, error) {
+	host := os.Getenv("DATABASE_DOMAIN")
+	user := os.Getenv("DATABASE_USERNAME")
+	password := os.Getenv("DATABASE_PASSWORD")
+	name := os.Getenv("DATABASE_SCHEMA")
+	port := os.Getenv("DATABASE_PORT")
 
-	user := os.Getenv("DB_USER")
-	pass := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB")
-
-	connString := fmt.Sprintf("host=localhost port=5432 user=%s dbname=%s sslmode=disable password=%s", user, dbName, pass)
-	db, err = gorm.Open("postgres", connString)
+	connectionString := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		host,
+		user,
+		password,
+		name,
+		port,
+	)
+	db, err = gorm.Open("postgres", connectionString)
 
 	if err != nil {
 		panic("failed to connect database")
@@ -37,7 +43,7 @@ func initDB() *gorm.DB {
 	db.AutoMigrate(model.User{})
 	db.AutoMigrate(model.Company{})
 	db.AutoMigrate(model.Comment{})
-	return db
+	return db, err
 }
 
 func addPredefinedAdmins(repo *repository.UserRepository) {
@@ -161,16 +167,9 @@ func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
 }
 
 func main() {
+	database, _ := initDB()
 
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	database := initDB()
-
-	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	port := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
 
 	auth0Client := initAuth0Client()
 

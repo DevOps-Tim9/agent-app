@@ -1,11 +1,11 @@
 package service
 
 import (
-	"agent-app/auth0"
-	"agent-app/dto"
-	"agent-app/mapper"
-	"agent-app/model"
-	"agent-app/repository"
+	"agent-app/src/auth0"
+	"agent-app/src/dto"
+	"agent-app/src/mapper"
+	"agent-app/src/model"
+	"agent-app/src/repository"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

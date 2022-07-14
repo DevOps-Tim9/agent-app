@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"agent-app/dto"
-	"agent-app/service"
+	"agent-app/src/dto"
+	"agent-app/src/service"
 	"fmt"
 	"net/http"
 
