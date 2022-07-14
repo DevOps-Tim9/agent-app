@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="right">
+    <h1>Company registration</h1>
+    <p>Enter information about company:</p>
+    <form [formGroup]="newCompanyForm" (ngSubmit)="onSubmit()" style="text-align: center;">
+      <mat-form-field appearance="standard">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput placeholder="Name" [errorStateMatcher]="matcher">
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="f.name.errors?.required">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+          <mat-label>Contact</mat-label>
+          <input formControlName="contact" matInput placeholder="Contact" [errorStateMatcher]="matcher">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="f.contact.errors?.required">Contact is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Description</mat-label>
+          <textarea formControlName="description" matInput placeholder="Description" rows="5" [errorStateMatcher]="matcher"></textarea>
+          <mat-error *ngIf="f.description.errors?.required">Description is required</mat-error>
+        </mat-form-field>
+      <button class="button1">Add</button>
+    </form>
+  </div>
+</div>
+  

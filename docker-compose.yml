@@ -1,0 +1,74 @@
+version: "3.7"
+
+services:
+  database:
+    container_name: postgres_container_agent
+    image: postgres:13
+    restart: always
+    networks:
+      - agent-be
+      - network-for-ms
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    ports:
+      - "5441:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  agent-app:
+    build:
+      context: ./agent-be
+      dockerfile: Dockerfile
+      target: ${TARGET:-run}
+    restart: on-failure
+    networks:
+      - agent-be
+      - network-for-ms
+    environment:
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_DOMAIN: ${DATABASE_DOMAIN}
+      DATABASE_SCHEMA: ${DATABASE_SCHEMA}
+      DATABASE_PORT: ${DATABASE_PORT}
+      SERVER_PORT: ${SERVER_PORT}
+      AMQP_SERVER_URL: ${AMQP_SERVER_URL}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
+      AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - logs:/root/logs
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./agent-app-FE
+      dockerfile: Dockerfile
+    ports:
+      - 4201:4201
+
+volumes:
+  data:
+    name: agent-be-database
+  logs:
+    name: agent-logs
+
+networks:
+  agent-be:
+    name: agent-be
+    driver: bridge
+  network-for-ms:
+    name: network-for-ms

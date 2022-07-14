@@ -1,0 +1,25 @@
+$font-stack: Roboto, "Helvetica Neue", sans-serif;
+$primary-color: #2d388a;
+$grey-letters: #292929;
+$success: #368836;
+$error: #b12929;
+$warning: rgb(173, 109, 36);
+$background-color: rgb(241, 240, 240);
+$light-grey-letters: rgb(206, 205, 205);
+$medium-grey-letters: rgb(151, 151, 151);
+$form-grey-letters: rgb(110, 110, 110);
+$white-letters: #ffffff;
+$black-letters: #222222;
+$dark-blue: #025f81;
+$light-blue: #eaf2fd;
+$red: #f54749;
+$grey-background: #f7f7f7;
+
+%flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+%simple-raised-button {
+    outline: none;
+}
