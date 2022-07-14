@@ -9,6 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+        
     steps:
     - uses: actions/checkout@v3
     - uses: webiny/action-conventional-commits@v1.0.3
@@ -18,9 +23,37 @@ jobs:
       with:
         go-version: 1.18
 
-    - name: Build
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache node modules
+      id: cache-nodemodules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # caching node_modules
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install Dependencies
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+      run: |
+        npm ci
+
+    - name: Build BE
       working-directory: ./agent-be
       run: go build -v ./...
+
+    - name: Build FE
+      working-directory: ./agent-app-FE
+      run: |
+        npm run build
 
     - name: Test
       working-directory: ./agent-be
