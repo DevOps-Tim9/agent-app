@@ -10,6 +10,7 @@ import { EditCompanyComponent } from './edit-company/edit-company.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { JobOffersComponent } from './job-offers/job-offers.component';
 import { RegisterComponent } from './register/register.component';
+import {CommentsComponent} from "./comments/comments.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,14 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomepageComponent,
+    canActivate: [RoleGuard],
+    data: {
+      expectedRoles: 'get:companies'
+    }
+  },
+  {
+    path: 'company/:id',
+    component: CommentsComponent,
     canActivate: [RoleGuard],
     data: {
       expectedRoles: 'get:companies'

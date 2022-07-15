@@ -1,0 +1,96 @@
+@use '../../base';
+
+.div-centered {
+    @extend %flex-center;
+}
+
+.button-class {
+    @extend %simple-raised-button;
+    padding: 0px 8px 0px 8px;
+}
+
+.button-add {
+    @extend %simple-raised-button;
+    float: right;
+}
+
+.button-group {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+app-search {
+    width: 80%;
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-card-title {
+  margin-bottom: 20px;
+}
+
+.comments {
+  font-size: 1em
+}
+
+.mat-column-approve {
+    flex: none;
+    width: 7%;
+}
+
+.mat-column-reject {
+    flex: none;
+    width: 7%;
+}
+
+.mat-column-description {
+    flex: none;
+    width: 50%;
+}
+
+.rating-list li {
+  float: right;
+  color: #ddd;
+  padding: 5px 5px;
+
+}
+
+.position{
+  margin-top: -15px;
+}
+
+ul {
+  list-style-type: none;
+  margin:-10px 0 0;
+  padding: 0;
+
+}
+
+.rating-list li.selected {
+  color: #ffd700;
+}
+
+.rating {
+  margin-top: 0;
+  float: right;
+}
+
+.td-main{
+  width: 30%;
+}
+
+.td-content{
+  width: 70%;
+}
+
+.fa-star{
+  font-size: 20px !important;
+}
+
+.interviewProcess{
+  width: 85%;
+}
