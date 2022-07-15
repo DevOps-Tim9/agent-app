@@ -40,7 +40,7 @@ export class AuthService {
   checkSession$ = bindNodeCallback(this.auth0.checkSession.bind(this.auth0));
 
   constructor(
-    public router: Router, 
+    public router: Router,
     private http: HttpClient
   ) {}
 
@@ -66,6 +66,7 @@ export class AuthService {
     localStorage.setItem(this.authFlag, JSON.stringify(true));
 
     const jwt: JwtHelperService = new JwtHelperService();
+    localStorage.setItem("mail", authResult.idTokenPayload.name)
     localStorage.setItem("role", JSON.stringify(jwt.decodeToken(authResult.accessToken).permissions));
     localStorage.setItem("auth0id", JSON.stringify(jwt.decodeToken(authResult.accessToken).sub));
   }

@@ -8,7 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -28,6 +28,9 @@ import { CreateJobOfferComponent } from './create-job-offer/create-job-offer.com
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { JobOfferDetailsComponent } from './job-offer-details/job-offer-details.component';
+import {CommentsComponent} from "./comments/comments.component";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { JobOfferDetailsComponent } from './job-offer-details/job-offer-details.
     EditCompanyComponent,
     JobOffersComponent,
     CreateJobOfferComponent,
-    JobOfferDetailsComponent
+    JobOfferDetailsComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,10 @@ import { JobOfferDetailsComponent } from './job-offer-details/job-offer-details.
     MatTabsModule,
     MatDialogModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    MatDividerModule,
+    FormsModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

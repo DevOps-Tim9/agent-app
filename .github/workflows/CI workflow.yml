@@ -50,6 +50,7 @@ jobs:
     - name: Build BE
       working-directory: ./agent-be
       run: go build -v ./...
+      
 
     - name: Build FE
       working-directory: ./agent-app-FE

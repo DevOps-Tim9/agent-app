@@ -38,6 +38,10 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  onClickCompany(company){
+    this.router.navigate([`/company/${company.ID}`]);
+  }
+
   edit(c: CompanyRequestResponse) {
     this.router.navigate(['/edit-company'], { state: { company: c } });
   }
