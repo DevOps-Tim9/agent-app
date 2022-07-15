@@ -16,7 +16,7 @@
         <mat-divider></mat-divider>
         <mat-card *ngFor="let comment of comments">
           <mat-card-content>
-            <mat-card-subtitle class="comments position">Position: {{comment.Position}}
+            <mat-card-subtitle class="comments position"><mat-icon> comment</mat-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Position: {{comment.Position}}
               <ul class="rating list-inline rating-list" *ngFor="let star of starForComment"
                   style="display: inline-block">
                 <li
