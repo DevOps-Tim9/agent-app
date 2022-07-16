@@ -177,7 +177,7 @@ func (suite *CompanyServiceIntegrationTestSuite) TestIntegrationCompanyService_U
 
 	response, err := suite.service.Update(&company, auth0ID)
 	assert.NotNil(suite.T(), err)
-	assert.Equal(suite.T(), nil, response)
+	assert.Nil(suite.T(), response)
 }
 
 func (suite *CompanyServiceIntegrationTestSuite) TestIntegrationCompanyService_Update_OwnerNotUpdatingCompany() {
