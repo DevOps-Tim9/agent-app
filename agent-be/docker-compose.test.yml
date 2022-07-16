@@ -60,47 +60,6 @@ services:
       retries: 5
     restart: always
 
-  database-jobs:
-    image: postgres:13
-    restart: always
-    networks:
-      - jobs-ms
-      - network-for-ms
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: JobOffers-tests
-    healthcheck:
-      test: pg_isready -U postgres -d JobOffers-tests
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    ports:
-      - "5436:5432"
-
-  jobs-server:
-    container_name: jobs-ms-jobs-server-1
-    build:
-      context: 'https://github.com/DevOps-Tim9/jobs-ms.git#develop'
-      dockerfile: Dockerfile
-    restart: on-failure
-    networks:
-      - jobs-ms
-      - network-for-ms
-    environment:
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: admin
-      DATABASE_DOMAIN: jobs-database-test
-      DATABASE_SCHEMA: JobOffers-tests
-      DATABASE_PORT: 5432
-      SERVER_PORT: 9099
-    ports:
-      - "9099:9099"
-    depends_on:
-      database-jobs:
-        condition: service_healthy
-
 networks:
   agent-ms-test:
     name: agent-ms-test
