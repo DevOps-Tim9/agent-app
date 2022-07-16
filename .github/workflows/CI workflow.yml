@@ -32,7 +32,7 @@ jobs:
       id: cache-nodemodules
       uses: actions/cache@v2
       env:
-        cache-name: cache-node-modules
+        cache-name: node-modules-cache
       with:
         # caching node_modules
         path: node_modules
