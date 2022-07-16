@@ -41,6 +41,8 @@ func (suite *UserServiceIntegrationTestSuite) SetupSuite() {
 
 	db.AutoMigrate(model.User{})
 
+	db.Where("1=1").Delete(model.User{})
+
 	auth0Client := auth0.NewAuth0Client(os.Getenv("AUTH0_DOMAIN"), os.Getenv("AUTH0_CLIENT_ID"), os.Getenv("AUTH0_CLIENT_SECRET"), os.Getenv("AUTH0_AUDIENCE"))
 	userRepo := repository.UserRepository{Database: db}
 
@@ -70,7 +72,7 @@ func (suite *UserServiceIntegrationTestSuite) SetupSuite() {
 }
 
 func TestUserServiceIntegrationTestSuite(t *testing.T) {
-	suite.Run(t, new(CompanyServiceIntegrationTestSuite))
+	suite.Run(t, new(UserServiceIntegrationTestSuite))
 }
 
 func (suite *UserServiceIntegrationTestSuite) TestIntegrationUserService_GetByEmail_UserExists() {
