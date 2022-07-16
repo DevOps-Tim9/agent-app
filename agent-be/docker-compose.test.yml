@@ -80,8 +80,9 @@ services:
       - "5436:5432"
 
   jobs-server:
+    container_name: jobs-ms-jobs-server-1
     build:
-      context: .
+      context: 'https://github.com/DevOps-Tim9/jobs-ms.git#develop'
       dockerfile: Dockerfile
     restart: on-failure
     networks:
