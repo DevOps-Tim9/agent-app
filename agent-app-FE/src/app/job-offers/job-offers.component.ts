@@ -17,6 +17,7 @@ export class JobOffersComponent implements OnInit {
   allJobOffers: JobOfferRequest[] = [];
   myJobOffers: JobOfferRequest[] = [];
   displayedColumns: string[] = ['company', 'position', 'jobDescription', 'details', 'delete'];
+  displayedColumnsAllJobOffers: string[] = ['company', 'position', 'jobDescription'];
 
   constructor(
     private router: Router,
@@ -33,6 +34,7 @@ export class JobOffersComponent implements OnInit {
   getJobOffers() {
     this.companyService.getAllCompanies().subscribe((data: CompanyRequestResponse[]) => {
       const auth0id = localStorage.getItem('auth0id');
+      const allCompanies = data;
       const companies = data.filter((c) => '"' + c.OwnerId + '"' === auth0id);
       const companyIDS = companies.map((c) => c.ID);
 
@@ -40,7 +42,7 @@ export class JobOffersComponent implements OnInit {
         this.allJobOffers = data.filter(offer => !companyIDS.includes(offer.CompanyID));
         this.myJobOffers = data.filter(offer => companyIDS.includes(offer.CompanyID));
         this.allJobOffers = this.allJobOffers.map(jo => {
-          const company = companies.find(c => c.ID === jo.CompanyID)
+          const company = allCompanies.find(c => c.ID === jo.CompanyID)
           return { companyName: company.Name, ...jo };
         });
         this.myJobOffers = this.myJobOffers.map(jo => {

@@ -14,7 +14,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.authService.isAuthenticated) {
-      return EMPTY;
+      return next.handle(req);
     } else {
       return this.authService.token$.pipe(
         filter(token => typeof token === 'string'),
