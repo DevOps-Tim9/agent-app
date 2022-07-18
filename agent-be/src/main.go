@@ -6,20 +6,24 @@ import (
 	"agent-app/src/model"
 	"agent-app/src/repository"
 	"agent-app/src/service"
+	"flag"
 	"fmt"
-	"net/http"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/rs/cors"
+	"net"
+	"net/http"
+	"net/url"
+	"os"
 )
 
 var db *gorm.DB
 var err error
 
 func initDB() (*gorm.DB, error) {
+	databaseCommand := flag.String("DATABASE_URL", "", "Port value")
+
 	host := os.Getenv("DATABASE_DOMAIN")
 	user := os.Getenv("DATABASE_USERNAME")
 	password := os.Getenv("DATABASE_PASSWORD")
@@ -34,6 +38,12 @@ func initDB() (*gorm.DB, error) {
 		name,
 		port,
 	)
+	if *databaseCommand != "" {
+		uriDatabase, _ := url.Parse(*databaseCommand)
+		user = uriDatabase.User.Username()
+		password, _ = uriDatabase.User.Password()
+		host, port, _ = net.SplitHostPort(uriDatabase.Host)
+	}
 	db, err = gorm.Open("postgres", connectionString)
 
 	if err != nil {
@@ -168,8 +178,8 @@ func handleOfferFunc(handler *handler.OfferHandler, router *gin.Engine) {
 
 func main() {
 	database, _ := initDB()
-
-	port := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
+	portCommand := flag.String("PORT", os.Getenv("SERVER_PORT"), "Port value")
+	port := fmt.Sprintf(":%s", portCommand)
 
 	auth0Client := initAuth0Client()
 
