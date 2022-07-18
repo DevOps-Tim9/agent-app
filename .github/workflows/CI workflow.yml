@@ -45,7 +45,7 @@ jobs:
       working-directory: ./agent-app-FE
       if: steps.cache-nodemodules.outputs.cache-hit != 'true'
       run: |
-        npm ci
+        npm install
 
     - name: Build BE
       working-directory: ./agent-be
