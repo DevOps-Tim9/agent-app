@@ -13,9 +13,11 @@ import { CompanyService } from '../core/services/company.service';
 export class HomepageComponent implements OnInit {
   permissions = [];
   auth0id = '';
-  companies: CompanyRequestResponse[];
+  allCompanies: CompanyRequestResponse[];
+  myCompanies: CompanyRequestResponse[];
   displayedColumns: string[] = ['name', 'contact', 'owner', 'description', 'edit'];
-
+  displayedColumnsAllCompanies: string[] = ['name', 'contact', 'owner', 'description'];
+  
   constructor(
     private authService: AuthService,
     private companyService: CompanyService,
@@ -30,11 +32,11 @@ export class HomepageComponent implements OnInit {
       take(1))
       .subscribe(value => console.log(value));
     this.companyService.getAllCompanies().subscribe((data: CompanyRequestResponse[]) => {
+      this.allCompanies = data;
       if (this.permissions.includes('update:company')) {
-        this.companies = data.filter((c) => '"' + c.OwnerId + '"' === this.auth0id);
-      } else {
-        this.companies = data;
+        this.allCompanies = this.allCompanies.filter((c) => '"' + c.OwnerId + '"' !== this.auth0id);
       }
+      this.myCompanies = data.filter((c) => '"' + c.OwnerId + '"' === this.auth0id);
     });
   }
 

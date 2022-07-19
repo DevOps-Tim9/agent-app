@@ -35,7 +35,7 @@ jobs:
         cache-name: node-modules-cache2
       with:
         # caching node_modules
-        path: node_modules
+        path: ~/.npm
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
