@@ -1,0 +1,6 @@
+build:
+  docker:
+    web: Dockerfile
+  config:
+    API_URL: "  apiUrl:  'https://devops22tim8.herokuapp.com'"
+
