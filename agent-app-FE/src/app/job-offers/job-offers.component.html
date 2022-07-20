@@ -1,0 +1,71 @@
+<div>
+    <div class="register-company-div">
+        <button mat-flat-button color="primary" class="button-class register-company-button" (click)="goTo('/create-job-offer')">Create Job Offer</button>
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="All Job Offers">
+            <div *ngIf="allJobOffers?.length === 0" style="width: 100%; margin-top: 40px; display: flex; justify-content: center;">
+                <h1>There are no job offers at the moment.</h1>
+            </div>
+            <div *ngIf="allJobOffers?.length !== 0">
+                <table mat-table [dataSource]="allJobOffers" class="mat-elevation-z8">
+                    <ng-container matColumnDef="company">
+                        <th mat-header-cell *matHeaderCellDef> Company </th>
+                        <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Position}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="jobDescription">
+                        <th mat-header-cell *matHeaderCellDef> Job Description </th>
+                        <td mat-cell *matCellDef="let element"> {{element.JobDescription}} </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsAllJobOffers"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsAllJobOffers;"></tr>
+                  </table>            
+            </div>
+        </mat-tab>
+
+        <mat-tab label="My Job Offers">
+            <div *ngIf="myJobOffers?.length === 0" style="width: 100%; margin-top: 40px; display: flex; justify-content: center;">
+                <h1>You have no job offers at the moment.</h1>
+            </div>
+            <div *ngIf="myJobOffers?.length !== 0">
+                <table mat-table [dataSource]="myJobOffers" class="mat-elevation-z8">
+                    <ng-container matColumnDef="company">
+                        <th mat-header-cell *matHeaderCellDef> Company </th>
+                        <td mat-cell *matCellDef="let element" (click)="openDialog(element)"> {{element.companyName}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let element" (click)="openDialog(element)"> {{element.Position}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="jobDescription">
+                        <th mat-header-cell *matHeaderCellDef> Job Description </th>
+                        <td mat-cell *matCellDef="let element" (click)="openDialog(element)"> {{element.JobDescription}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="details">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element"> <button (click)="openDialog(element)" mat-flat-button color="primary" class="button-class">View details</button> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="delete">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element"> <button (click)="delete(element)" mat-flat-button color="warn" class="button-class">Delete</button> </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>            
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="right">
+      <h1>Add Job Offer</h1>
+      <p>Enter information about job offer:</p>
+      <form [formGroup]="newJobOfferForm" (ngSubmit)="onSubmit()" style="text-align: center;">
+        <mat-form-field appearance="standard">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="companyID">
+                <mat-option *ngFor="let c of companies" [value]="c.ID">
+                    {{c.Name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="standard">
+          <mat-label>Position</mat-label>
+          <input formControlName="position" matInput placeholder="Position" [errorStateMatcher]="matcher">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="f.position.errors?.required">Position is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Job description</mat-label>
+            <textarea formControlName="jobDescription" matInput placeholder="Job description" rows="3" [errorStateMatcher]="matcher"></textarea>
+            <mat-error *ngIf="f.jobDescription.errors?.required">Job description is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Daily activities description</mat-label>
+            <textarea formControlName="dailyActivitiesDescription" matInput placeholder="Daily activities description" rows="3" [errorStateMatcher]="matcher"></textarea>
+            <mat-error *ngIf="f.dailyActivitiesDescription.errors?.required">Daily activities description is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Skills</mat-label>
+            <input formControlName="skills" matInput placeholder="Skills" [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="f.skills.errors?.required">Skills is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Link</mat-label>
+            <input formControlName="link" matInput placeholder="Link" [errorStateMatcher]="matcher" pattern="^http(s)?:\/\/\w+(\.\w+)*(:[0-9]+)?\/?(\/[.\w]*)*$">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="f.link.errors?.required">Link is required</mat-error>
+            <mat-error *ngIf="f.link.errors?.pattern">Link is not valid</mat-error>
+        </mat-form-field>
+
+        <button class="button1">Add</button>
+      </form>
+    </div>
+</div>

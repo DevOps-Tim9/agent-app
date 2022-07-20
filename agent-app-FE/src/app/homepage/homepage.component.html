@@ -1,0 +1,79 @@
+<div class="container-fluid">
+    <div class="register-company-div">
+        <button mat-flat-button color="primary" class="button-class register-company-button" (click)="goTo('/company-registration')" *ngIf="permissions?.includes('update:company')">Register Company</button>
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="All Companies">
+            <div *ngIf="allCompanies?.length === 0 && !permissions?.includes('update:company')" style="width: 100%; margin-top: 40px; display: flex; justify-content: center;">
+                <h1>There are no companies.</h1>
+            </div>
+            <div *ngIf="allCompanies?.length === 0 && permissions?.includes('update:company')" style="width: 100%; margin-top: 40px; display: flex; justify-content: center;">
+                <h1>There are no companies other than yours.</h1>
+            </div>
+            <div *ngIf="allCompanies?.length !== 0">
+                <table mat-table [dataSource]="allCompanies" class="mat-elevation-z8">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="contact">
+                        <th mat-header-cell *matHeaderCellDef> Contact </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Contact}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="owner">
+                        <th mat-header-cell *matHeaderCellDef> <span *ngIf="!permissions?.includes('update:company')">Owner</span> </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> <span *ngIf="!permissions?.includes('update:company')">{{element.Owner}}</span> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef> Description </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Description}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsAllCompanies"></tr>
+                    <tr  mat-row *matRowDef="let row; columns: displayedColumnsAllCompanies;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+
+        <mat-tab *ngIf="permissions?.includes('update:company')" label="My Companies">
+            <div *ngIf="myCompanies?.length === 0" style="width: 100%; margin-top: 40px; display: flex; justify-content: center;">
+                <h1>You have no companies at the moment.</h1>
+            </div>
+            <div *ngIf="myCompanies?.length !== 0">
+                <table mat-table [dataSource]="myCompanies" class="mat-elevation-z8">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="contact">
+                        <th mat-header-cell *matHeaderCellDef> Contact </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Contact}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="owner">
+                        <th mat-header-cell *matHeaderCellDef> <span *ngIf="!permissions?.includes('update:company')">Owner</span> </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> <span *ngIf="!permissions?.includes('update:company')">{{element.Owner}}</span> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef> Description </th>
+                        <td (click)="onClickCompany(element)" mat-cell *matCellDef="let element"> {{element.Description}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="edit">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element"> <button mat-flat-button color="primary" class="button-class" (click)="edit(element)" *ngIf="permissions?.includes('update:company')">Edit</button> </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr  mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

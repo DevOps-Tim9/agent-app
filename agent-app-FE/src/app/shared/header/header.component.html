@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span (click)="goTo('/')">Home</span>
+    <span (click)="goTo('/company-requests')" *ngIf="permissions.includes('get:company-requests')">Company Requests</span>
+    <span (click)="goTo('/job-offers')" *ngIf="permissions.includes('get:job-offers')">Job Offers</span>
+    <span class="example-spacer"></span>
+    <span (click)="logout()" style="margin-right: 0;">Log out</span>
+    <mat-icon (click)="logout()" class="example-icon">exit_to_app</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>

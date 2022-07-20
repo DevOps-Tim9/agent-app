@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="mt-2">
+    <div class="mt-4">
+      <mat-card>
+        <mat-card-title>
+          <mat-icon>grade</mat-icon>
+          Company Name: {{company?.Name}}</mat-card-title>
+        <mat-card-subtitle>Owner: {{company?.Owner}}</mat-card-subtitle>
+        <mat-card-subtitle>Contact: {{company?.Contact}}</mat-card-subtitle>
+        <mat-card-subtitle>Description: {{company?.Description}}</mat-card-subtitle>
+
+        <mat-divider></mat-divider>
+        <mat-card>
+          <mat-card-title class="comments">Comments</mat-card-title>
+        </mat-card>
+        <mat-divider></mat-divider>
+        <mat-card *ngFor="let comment of comments">
+          <mat-card-content>
+            <mat-card-subtitle class="comments position"><mat-icon> comment</mat-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Position: {{comment.Position}}
+              <ul class="rating list-inline rating-list" *ngFor="let star of starForComment"
+                  style="display: inline-block">
+                <li
+                  [ngClass]="{'selected': (star <= comment.Rating)}">
+                  <span class="material-icons ">star</span>
+                </li>
+              </ul>
+            </mat-card-subtitle>
+            <table>
+              <td class="td-main">
+                <tr>Interview Process</tr>
+                <tr>Impressions</tr>
+                <tr>Creation date</tr>
+              </td>
+              <td class="td-content">
+                <tr>{{comment.InterviewProcess}}</tr>
+                <tr> {{comment.Description}}</tr>
+                <tr>{{comment.CreationDate | date: 'dd/MM/yyyy'}}</tr>
+              </td>
+            </table>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title class="comments">Post the comment</mat-card-title>
+          <form [formGroup]="postForm" #gfgform="ngForm">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Position*</mat-label>
+              <input matInput id="position" type="text" formControlName="position">
+            </mat-form-field>
+
+            <br>
+            <mat-form-field class="example-full-width interviewProcess" appearance="fill">
+              <mat-label>Interview Process*</mat-label>
+              <input matInput id="interviewProcess" type="text" formControlName="interviewProcess">
+            </mat-form-field>
+
+
+            <mat-form-field class="example-full-width interviewProcess" appearance="fill">
+              <mat-label>Impressions/Comment*</mat-label>
+              <input matInput id="impressions" type="text" formControlName="impressions">
+            </mat-form-field>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <ul class="list-inline rating-list" *ngFor="let star of stars" style="display: inline-block">
+                  <li (click)="countStar(star)"
+                      [ngClass]="{'selected': (star <= selectedValue)}">
+                    <span class="material-icons ">star</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <mat-button-toggle (click)="postTheComment()">Submit</mat-button-toggle>
+          </form>
+        </mat-card>
+
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+@use '../../base';
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  height: 100%;
+  width: 100%;
+  font-family: base.$font-stack;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: 500;
+}
+
+p {
+  font-size: 1.3em;
+}
+
+.button1 {
+  border: none;
+  border-radius: 50px;
+  padding: 20px 80px 20px 80px;
+  margin: 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+.button1{
+  background: base.$primary-color;
+  color: white;
+}
+
+mat-form-field {
+  display: block;
+}
+
+form {
+  width: 30%;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#logo,
+#logo-mobile {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 150px;
+  cursor: pointer;
+}
+
+#logo-mobile {
+  display: none;
+}
+
+.mobile-account {
+  display: none;
+}
+
+
+@media (pointer: coarse) {
+  #logo {
+    display: none;
+  }
+
+  #logo-mobile {
+    display: block;
+  }
+
+  .left {
+    display: none;
+  }
+
+  .right {
+    width: 80%;
+    padding-top: 30px
+  }
+
+  .mobile-account {
+    display: block;
+  }
+
+  #sign-in {
+    color: #777777;
+    text-decoration: none;
+  }
+  
+  form {
+    width: 100%;
+  }
+}
