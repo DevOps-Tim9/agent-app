@@ -90,5 +90,5 @@ jobs:
     - name: Upload frontend artifact
       uses: actions/upload-artifact@v2
       with: 
-        name: agent-app-FE-${{ steps.versioning.outputs.version }}
-        path: ./agent-app-FE/build
+        name: agent-app-fe-${{ steps.versioning.outputs.version }}
+        path: ./agent-app-fe/build
