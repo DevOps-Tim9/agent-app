@@ -69,7 +69,7 @@ jobs:
       with:
         context: ./agent-app-FE
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ secrets.DOCKER_USERNAME }}/agent-app-FE:latest, ${{ secrets.DOCKER_USERNAME }}/agent-app-FE:${{ steps.semantic-version.outputs.version }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/agent-app-fe:latest, ${{ secrets.DOCKER_USERNAME }}/agent-app-fe:${{ steps.semantic-version.outputs.version }}
 
     - name: Build backend artifact
       working-directory: ./agent-be
