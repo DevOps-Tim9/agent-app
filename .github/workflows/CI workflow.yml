@@ -31,7 +31,7 @@ jobs:
       id: cache-nodemodules
       uses: actions/cache@v3
       env:
-        cache-name: node-modules-cache
+        cache-name: node-modules-cache2
       with:
         # caching node_modules
         path: ~/.npm
