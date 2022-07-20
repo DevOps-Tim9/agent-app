@@ -69,14 +69,14 @@ jobs:
       with:
         context: ./agent-be
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-be:latest, ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-be:${{ steps.semantic-version.outputs.version }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/agent-be:latest, ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-be:${{ steps.semantic-version.outputs.version }}
         
     - name: Build and push Docker image FE
       uses: docker/build-push-action@v2
       with:
         context: ./agent-app-FE
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-app-FE:latest, ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-app-FE:${{ steps.semantic-version.outputs.version }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/agent-app-FE:latest, ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}/agent-app-FE:${{ steps.semantic-version.outputs.version }}
 
     - name: Build backend artifact
       working-directory: ./agent-be
